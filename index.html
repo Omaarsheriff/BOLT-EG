@@ -1,0 +1,477 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">BOLT EG | متجر الستريتوير</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    body { background-color: #000; color: #fff; font-family: system-ui, -apple-system, sans-serif; }
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: #000; }
+    ::-webkit-scrollbar-thumb { background: #333; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+  <!-- شريط الإعلانات -->
+  <div id="announcement-bar" class="bg-white text-black text-xs font-black py-2 px-4 text-center tracking-widest uppercase">
+    🔥 توصيل مجاني لكل المحافظات للطلبات فوق 1500 جنيه — طلب عبر واتساب مباشرة
+  </div>
+
+  <!-- الهيدر -->
+  <header class="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-neutral-800">
+    <div class="max-w-7xl mx-auto px-4 h-20 flex items-center justify-between">
+      <a href="#" id="brand-logo" class="text-2xl font-black tracking-tighter text-white">
+        BOLT <span class="text-neutral-500">EG</span>
+      </a>
+      
+      <div id="header-socials" class="hidden md:flex items-center space-x-4 space-x-reverse text-neutral-400"></div>
+
+      <div class="flex items-center space-x-3 space-x-reverse">
+        <button onclick="openAdminModal()" class="text-neutral-400 hover:text-white transition font-bold text-xs uppercase border border-neutral-800 px-3 py-2 rounded-lg flex items-center gap-1">
+          <i class="fa-solid fa-lock"></i> لوحة التحكم
+        </button>
+        <button onclick="toggleCart()" class="relative flex items-center space-x-2 space-x-reverse bg-white text-black px-4 py-2 rounded-full font-bold text-sm hover:bg-neutral-200 transition">
+          <i class="fa-solid fa-bag-shopping"></i>
+          <span>السلة (<span id="cart-count">0</span>)</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- القسم الرئيسي -->
+  <section class="bg-neutral-950 border-b border-neutral-800 py-16 px-4 text-center space-y-4">
+    <h1 id="hero-title" class="text-4xl md:text-6xl font-black tracking-tighter text-white">أزياء الشارع المصرية بمقاييس عالمية</h1>
+    <p id="hero-subtitle" class="text-neutral-400 text-sm max-w-xl mx-auto">هوديز ثقيلة الوزن وتصاميم متميزة مصممة خصيصاً لتعكس هويتك.</p>
+  </section>
+
+  <!-- المنتجات -->
+  <main class="flex-grow max-w-7xl mx-auto px-4 py-12 w-full">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-xl font-bold tracking-tight">التشكيلة الحالية</h2>
+      <span id="product-count" class="text-xs text-neutral-500">0 منتج</span>
+    </div>
+    <div id="products-grid" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6"></div>
+  </main>
+
+  <!-- السلة -->
+  <div id="cart-drawer" class="fixed inset-0 z-50 overflow-hidden hidden">
+    <div class="absolute inset-0 bg-black/80" onclick="toggleCart()"></div>
+    <div class="absolute inset-y-0 right-0 max-w-full flex pr-10">
+      <div class="w-screen max-w-md bg-neutral-950 border-l border-neutral-800 p-6 flex flex-col justify-between shadow-2xl">
+        <div>
+          <div class="flex items-center justify-between pb-4 border-b border-neutral-800">
+            <h2 class="text-white font-black text-lg">سلة المشتريات</h2>
+            <button onclick="toggleCart()" class="text-neutral-400 hover:text-white"><i class="fa-solid fa-xmark text-lg"></i></button>
+          </div>
+          <div id="cart-items" class="mt-6 space-y-4 max-h-[50vh] overflow-y-auto"></div>
+        </div>
+        <div id="cart-footer" class="pt-4 border-t border-neutral-800 space-y-4 hidden">
+          <div class="flex justify-between items-center font-black text-base">
+            <span>المجموع الكلي:</span>
+            <span id="cart-total">0 EGP</span>
+          </div>
+          <button onclick="checkoutWhatsApp()" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center space-x-2 space-x-reverse text-sm uppercase">
+            <i class="fa-brands fa-whatsapp text-lg"></i>
+            <span>إتمام الطلب عبر واتساب</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- لوحة التحكم الآمنة -->
+  <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden">
+    <div class="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 md:p-8 w-full max-w-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
+      <button onclick="closeAdminModal()" class="absolute top-4 left-4 text-neutral-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
+      
+      <!-- تسجيل الدخول -->
+      <div id="admin-auth-view" class="space-y-4 py-6">
+        <h2 class="text-xl font-black text-white text-center">لوحة التحكم الآمنة</h2>
+        <p class="text-xs text-neutral-400 text-center">أدخل كلمة المرور الخاصة بالمتجر للوصول للوحة التحكم.</p>
+        <form onsubmit="loginAdmin(event)" class="space-y-4 max-w-sm mx-auto">
+          <input type="password" id="admin-pass" placeholder="أدخل كلمة المرور" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-3 text-sm text-white outline-none focus:border-white text-center tracking-widest" required>
+          <button type="submit" class="w-full bg-white text-black font-bold uppercase py-3 rounded-lg hover:bg-neutral-200 transition">دخول اللوحة</button>
+        </form>
+      </div>
+
+      <!-- محتوى لوحة التحكم -->
+      <div id="admin-dashboard-view" class="space-y-6 hidden">
+        <div class="flex justify-between items-center border-b border-neutral-800 pb-4">
+          <h2 class="text-xl font-black text-white">إدارة المتجر بالكامل</h2>
+          <button onclick="logoutAdmin()" class="text-xs text-red-400 border border-red-900/50 bg-red-950/30 px-3 py-1.5 rounded-lg">تسجيل الخروج</button>
+        </div>
+
+        <div class="flex flex-wrap gap-2 border-b border-neutral-800 text-xs font-bold pb-2">
+          <button onclick="switchTab('products')" id="tab-btn-products" class="py-2 px-3 rounded bg-neutral-800 text-white">المنتجات</button>
+          <button onclick="switchTab('customizer')" id="tab-btn-customizer" class="py-2 px-3 rounded text-neutral-400 hover:text-white">إعدادات الموقع</button>
+          <button onclick="switchTab('social')" id="tab-btn-social" class="py-2 px-3 rounded text-neutral-400 hover:text-white">روابط السوشيال ميديا</button>
+          <button onclick="switchTab('security')" id="tab-btn-security" class="py-2 px-3 rounded text-neutral-400 hover:text-white">أمان الباسورد</button>
+        </div>
+
+        <!-- 1. تبويب المنتجات -->
+        <div id="tab-products" class="space-y-4 tab-content">
+          <h3 class="font-bold text-sm text-neutral-200">إضافة منتج جديد برفع الصورة مباشرة</h3>
+          <form onsubmit="addProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
+            <input type="text" id="p-name" placeholder="اسم المنتج" class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white" required>
+            <input type="number" id="p-price" placeholder="السعر (EGP)" class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white" required>
+            <div class="md:col-span-2 space-y-1">
+              <label class="text-neutral-400 text-xs">اختر صورة المنتج من جهازك:</label>
+              <input type="file" id="p-image-file" accept="image/*" class="w-full bg-neutral-900 p-2.5 rounded-lg border border-neutral-800 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-white file:text-black hover:file:bg-neutral-200 cursor-pointer" required>
+            </div>
+            <textarea id="p-desc" placeholder="وصف المنتج..." class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white md:col-span-2" rows="2"></textarea>
+            <button type="submit" class="md:col-span-2 bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">حفظ ونشر المنتج فورا</button>
+          </form>
+
+          <div class="pt-4 border-t border-neutral-800">
+            <h4 class="font-bold text-sm mb-3">المنتجات الحالية (<span id="admin-prod-count">0</span>)</h4>
+            <div id="admin-products-list" class="space-y-2 max-h-48 overflow-y-auto"></div>
+          </div>
+        </div>
+
+        <!-- 2. تبويب تخصيص إعدادات الموقع -->
+        <div id="tab-customizer" class="space-y-4 tab-content hidden">
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block text-neutral-400 mb-1">اسم المتجر</label>
+              <input type="text" id="set-brand" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            </div>
+            <div>
+              <label class="block text-neutral-400 mb-1">رقم الواتساب (للطلبات)</label>
+              <input type="text" id="set-whatsapp" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            </div>
+            <div>
+              <label class="block text-neutral-400 mb-1">عنوان الرئيسية (Hero Title)</label>
+              <input type="text" id="set-hero-title" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            </div>
+            <button onclick="saveSettings()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ التغييرات</button>
+          </div>
+        </div>
+
+        <!-- 3. تبويب السوشيال ميديا -->
+        <div id="tab-social" class="space-y-4 tab-content hidden">
+          <div class="space-y-3 text-xs">
+            <div>
+              <label class="block text-neutral-400 mb-1">رابط إنستجرام (Instagram URL)</label>
+              <input type="url" id="social-insta" placeholder="https://instagram.com/yourstore" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            </div>
+            <div>
+              <label class="block text-neutral-400 mb-1">رابط تيك توك (TikTok URL)</label>
+              <input type="url" id="social-tiktok" placeholder="https://tiktok.com/@yourstore" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            </div>
+            <div>
+              <label class="block text-neutral-400 mb-1">رابط فيسبوك (Facebook URL)</label>
+              <input type="url" id="social-fb" placeholder="https://facebook.com/yourstore" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            </div>
+            <button onclick="saveSocials()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ روابط السوشيال ميديا</button>
+          </div>
+        </div>
+
+        <!-- 4. تبويب أمان الباسورد -->
+        <div id="tab-security" class="space-y-4 tab-content hidden">
+          <div class="space-y-3 text-xs max-w-md">
+            <input type="password" id="sec-current" placeholder="كلمة المرور الحالية" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            <input type="password" id="sec-new" placeholder="كلمة المرور الجديدة" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
+            <button onclick="changePassword()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">تحديث كلمة المرور</button>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- الفوتر -->
+  <footer class="bg-neutral-950 border-t border-neutral-900 text-neutral-400 py-10 mt-auto">
+    <div class="max-w-7xl mx-auto px-4 text-center text-xs space-y-4">
+      <h3 id="footer-brand" class="text-white font-black text-base tracking-tighter">BOLT EG</h3>
+      <div id="footer-socials" class="flex justify-center space-x-6 space-x-reverse text-base"></div>
+      <p>جميع الحقوق محفوظة &copy; 2026</p>
+    </div>
+  </footer>
+
+  <script>
+    let defaultProducts = [
+      { id: 1, name: 'BOLT Heavyweight Hoodie', price: 1250, desc: 'هودي مصمم بأعلى خامات القطن المصري الثقيل.', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600' }
+    ];
+
+    let storeSettings = JSON.parse(localStorage.getItem('bolt_settings')) || {
+      brandName: 'BOLT EG',
+      whatsapp: '201012345678',
+      heroTitle: 'أزياء الشارع المصرية بمقاييس عالمية'
+    };
+
+    let storeSocials = JSON.parse(localStorage.getItem('bolt_socials')) || {
+      insta: '',
+      tiktok: '',
+      fb: ''
+    };
+
+    // جلب كلمة المرور المخزنة بحرية، وإذا لم تكن موجودة يتم تعيين الافتراضية bolt2026 مرة واحدة فقط
+    if (!localStorage.getItem('bolt_admin_pass')) {
+      localStorage.setItem('bolt_admin_pass', 'bolt2026');
+    }
+
+    let products = localStorage.getItem('bolt_products') ? JSON.parse(localStorage.getItem('bolt_products')) : defaultProducts;
+    if (!localStorage.getItem('bolt_products')) {
+      localStorage.setItem('bolt_products', JSON.stringify(products));
+    }
+
+    let cart = [];
+    let isAdminLoggedIn = false;
+
+    function applySettings() {
+      document.getElementById('page-title').innerText = storeSettings.brandName + ' | متجر';
+      document.getElementById('brand-logo').innerText = storeSettings.brandName;
+      document.getElementById('footer-brand').innerText = storeSettings.brandName;
+      document.getElementById('hero-title').innerText = storeSettings.heroTitle;
+
+      let socialHTML = '';
+      if (storeSocials.insta) socialHTML += `<a href="${storeSocials.insta}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-instagram text-lg"></i></a>`;
+      if (storeSocials.tiktok) socialHTML += `<a href="${storeSocials.tiktok}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-tiktok text-lg"></i></a>`;
+      if (storeSocials.fb) socialHTML += `<a href="${storeSocials.fb}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-facebook text-lg"></i></a>`;
+
+      document.getElementById('header-socials').innerHTML = socialHTML;
+      document.getElementById('footer-socials').innerHTML = socialHTML;
+    }
+
+    function renderProducts() {
+      const grid = document.getElementById('products-grid');
+      document.getElementById('product-count').innerText = products.length + ' منتج';
+      grid.innerHTML = '';
+      
+      if (products.length === 0) {
+        grid.innerHTML = '<p class="text-neutral-500 text-sm col-span-full text-center py-12">لا توجد منتجات حالياً. أضف منتجات من لوحة التحكم.</p>';
+        return;
+      }
+
+      products.forEach(p => {
+        grid.innerHTML += `
+          <div class="bg-neutral-950 border border-neutral-800 rounded-xl overflow-hidden flex flex-col group">
+            <div class="aspect-[3/4] bg-neutral-900 overflow-hidden relative">
+              <img src="${p.image}" alt="${p.name}" class="w-full h-full object-cover group-hover:scale-105 transition duration-500">
+            </div>
+            <div class="p-4 flex flex-col flex-grow justify-between">
+              <div>
+                <div class="flex justify-between items-start mb-1">
+                  <h3 class="text-white font-bold text-base">${p.name}</h3>
+                  <span class="text-white font-black text-sm">${p.price} EGP</span>
+                </div>
+                <p class="text-neutral-400 text-xs line-clamp-2 mb-4">${p.desc}</p>
+              </div>
+              <button onclick="addToCart(${p.id})" class="w-full bg-white text-black font-bold text-xs uppercase tracking-wider py-3 rounded-lg hover:bg-neutral-200 transition">
+                أضف إلى السلة
+              </button>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    function addToCart(id) {
+      const product = products.find(p => p.id === id);
+      const existing = cart.find(item => item.id === id);
+      if (existing) { existing.qty += 1; } else { cart.push({ ...product, qty: 1 }); }
+      updateCartUI();
+      toggleCart();
+    }
+
+    function updateCartUI() {
+      document.getElementById('cart-count').innerText = cart.reduce((acc, item) => acc + item.qty, 0);
+      const itemsContainer = document.getElementById('cart-items');
+      const cartFooter = document.getElementById('cart-footer');
+      if (cart.length === 0) {
+        itemsContainer.innerHTML = '<p class="text-neutral-500 text-sm text-center py-12">السلة فارغة حالياً.</p>';
+        cartFooter.classList.add('hidden');
+        return;
+      }
+      cartFooter.classList.remove('hidden');
+      itemsContainer.innerHTML = '';
+      let total = 0;
+      cart.forEach((item, index) => {
+        total += item.price * item.qty;
+        itemsContainer.innerHTML += `
+          <div class="flex space-x-4 space-x-reverse bg-neutral-900 p-3 rounded-xl border border-neutral-800 items-center justify-between">
+            <div>
+              <h4 class="text-white font-bold text-sm">${item.name}</h4>
+              <span class="text-neutral-400 text-xs">الكمية: ${item.qty} | ${item.price * item.qty} EGP</span>
+            </div>
+            <button onclick="removeFromCart(${index})" class="text-neutral-500 hover:text-red-400"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+      });
+      document.getElementById('cart-total').innerText = total + ' EGP';
+    }
+
+    function removeFromCart(index) {
+      cart.splice(index, 1);
+      updateCartUI();
+    }
+
+    function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); }
+
+    function checkoutWhatsApp() {
+      if (cart.length === 0) return;
+      let text = `*طلب جديد من متجر ${storeSettings.brandName}*%0A%0A`;
+      let total = 0;
+      cart.forEach((item, idx) => {
+        let subtotal = item.price * item.qty;
+        total += subtotal;
+        text += `${idx + 1}. *${item.name}* (كمية: ${item.qty}) - ${subtotal} EGP%0A`;
+      });
+      text += `*الإجمالي:* ${total} EGP`;
+      let cleanPhone = storeSettings.whatsapp.replace(/[^0-9]/g, '');
+      window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
+    }
+
+    function openAdminModal() {
+      document.getElementById('admin-modal').classList.remove('hidden');
+      if (isAdminLoggedIn) { showDashboard(); } 
+      else {
+        document.getElementById('admin-auth-view').classList.remove('hidden');
+        document.getElementById('admin-dashboard-view').classList.add('hidden');
+      }
+    }
+
+    function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
+
+    function loginAdmin(e) {
+      e.preventDefault();
+      const pass = document.getElementById('admin-pass').value;
+      const currentStoredPass = localStorage.getItem('bolt_admin_pass') || 'bolt2026';
+      
+      if (pass === currentStoredPass) {
+        isAdminLoggedIn = true;
+        document.getElementById('admin-pass').value = '';
+        showDashboard();
+      } else { alert('كلمة المرور غير صحيحة!'); }
+    }
+
+    function logoutAdmin() { isAdminLoggedIn = false; openAdminModal(); }
+
+    function showDashboard() {
+      document.getElementById('admin-auth-view').classList.add('hidden');
+      document.getElementById('admin-dashboard-view').classList.remove('hidden');
+      renderAdminProducts();
+      loadSettingsToForm();
+    }
+
+    function switchTab(tabName) {
+      ['products', 'customizer', 'social', 'security'].forEach(t => {
+        document.getElementById('tab-' + t).classList.add('hidden');
+        document.getElementById('tab-btn-' + t).classList.remove('bg-neutral-800', 'text-white');
+        document.getElementById('tab-btn-' + t).classList.add('text-neutral-400');
+      });
+      document.getElementById('tab-' + tabName).classList.remove('hidden');
+      document.getElementById('tab-btn-' + tabName).classList.add('bg-neutral-800', 'text-white');
+      document.getElementById('tab-btn-' + tabName).classList.remove('text-neutral-400');
+    }
+
+    function addProduct(e) {
+      e.preventDefault();
+      const name = document.getElementById('p-name').value;
+      const price = parseFloat(document.getElementById('p-price').value);
+      const desc = document.getElementById('p-desc').value;
+      const fileInput = document.getElementById('p-image-file');
+
+      if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(uploadEvent) {
+          const base64Image = uploadEvent.target.result;
+          const newP = { id: Date.now(), name, price, desc, image: base64Image };
+          
+          products.push(newP);
+          localStorage.setItem('bolt_products', JSON.stringify(products));
+          
+          renderProducts();
+          renderAdminProducts();
+          e.target.reset();
+          alert('تم رفع الصورة وإضافة المنتج بنجاح وثبات تام!');
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+      } else {
+        alert('يرجى اختيار صورة للمنتج من الجهاز.');
+      }
+    }
+
+    function deleteProduct(id) {
+      if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
+        products = products.filter(p => p.id !== id);
+        localStorage.setItem('bolt_products', JSON.stringify(products));
+        renderProducts();
+        renderAdminProducts();
+      }
+    }
+
+    function renderAdminProducts() {
+      const list = document.getElementById('admin-products-list');
+      document.getElementById('admin-prod-count').innerText = products.length;
+      list.innerHTML = '';
+      products.forEach(p => {
+        list.innerHTML += `
+          <div class="flex items-center justify-between bg-neutral-900 p-2.5 rounded-lg border border-neutral-800">
+            <div class="flex items-center gap-3">
+              <img src="${p.image}" class="w-10 h-10 object-cover rounded">
+              <div>
+                <h5 class="font-bold text-white text-xs">${p.name}</h5>
+                <span class="text-neutral-400 text-[10px]">${p.price} EGP</span>
+              </div>
+            </div>
+            <button onclick="deleteProduct(${p.id})" class="text-red-400 hover:text-red-300 p-1.5"><i class="fa-solid fa-trash"></i></button>
+          </div>
+        `;
+      });
+    }
+
+    function loadSettingsToForm() {
+      document.getElementById('set-brand').value = storeSettings.brandName;
+      document.getElementById('set-whatsapp').value = storeSettings.whatsapp;
+      document.getElementById('set-hero-title').value = storeSettings.heroTitle;
+
+      document.getElementById('social-insta').value = storeSocials.insta || '';
+      document.getElementById('social-tiktok').value = storeSocials.tiktok || '';
+      document.getElementById('social-fb').value = storeSocials.fb || '';
+    }
+
+    function saveSettings() {
+      storeSettings.brandName = document.getElementById('set-brand').value;
+      storeSettings.whatsapp = document.getElementById('set-whatsapp').value;
+      storeSettings.heroTitle = document.getElementById('set-hero-title').value;
+
+      localStorage.setItem('bolt_settings', JSON.stringify(storeSettings));
+      applySettings();
+      alert('تم حفظ إعدادات الموقع بنجاح!');
+    }
+
+    function saveSocials() {
+      storeSocials.insta = document.getElementById('social-insta').value;
+      storeSocials.tiktok = document.getElementById('social-tiktok').value;
+      storeSocials.fb = document.getElementById('social-fb').value;
+
+      localStorage.setItem('bolt_socials', JSON.stringify(storeSocials));
+      applySettings();
+      alert('تم حفظ وتحديث روابط السوشيال ميديا بنجاح!');
+    }
+
+    function changePassword() {
+      const curr = document.getElementById('sec-current').value;
+      const nw = document.getElementById('sec-new').value;
+      const currentStoredPass = localStorage.getItem('bolt_admin_pass') || 'bolt2026';
+
+      if (curr !== currentStoredPass) { alert('كلمة المرور الحالية غير صحيحة!'); return; }
+      if (!nw || nw.length < 4) { alert('كلمة المرور الجديدة قصيرة جداً (يجب أن تكون 4 أحرف أو أرقام على الأقل).'); return; }
+      
+      // حفظ كلمة المرور الجديدة نهائياً في المتصفح
+      localStorage.setItem('bolt_admin_pass', nw);
+      
+      document.getElementById('sec-current').value = '';
+      document.getElementById('sec-new').value = '';
+      alert('تم تحديث كلمة المرور وحفظها بنجاح نهائياً ولن تتغير بعد الريفريش!');
+    }
+
+    applySettings();
+    renderProducts();
+  </script>
+</body>
+</html>
