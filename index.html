@@ -122,7 +122,7 @@
               <input type="file" id="p-image-file" accept="image/*" class="w-full bg-neutral-900 p-2.5 rounded-lg border border-neutral-800 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-white file:text-black hover:file:bg-neutral-200 cursor-pointer" required>
             </div>
             <textarea id="p-desc" placeholder="وصف المنتج..." class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white md:col-span-2" rows="2"></textarea>
-            <button type="submit" class="md:col-span-2 bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">حفظ ونشر سحابياً</button>
+            <button type="submit" id="save-prod-btn" class="md:col-span-2 bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">حفظ ونشر سحابياً</button>
           </form>
 
           <div class="pt-4 border-t border-neutral-800">
@@ -174,10 +174,8 @@
   </footer>
 
   <script>
-    // تم وضع الـ Bin ID الخاص بك هنا تلقائياً
     const BIN_ID = "6a94f740da38895dfe24abc5"; 
-    // مفتاح الماستر العام لجلب البيانات المفتوحة
-    const API_KEY = "$2a$10$T8VqP8F0b2g9G3V9m0zO0e9x0e0e0e0e0e0e0e0e0e0e0e0e0e0e0"; 
+    const API_KEY = "$2a$10$3Z.6C8T950bP0ItUYn9Ir.4O/Sz.xuB6Bzv87E711DjVCuE0sNX7e"; 
 
     let dbData = {
       pass: "bolt2026",
@@ -189,7 +187,6 @@
     let cart = [];
     let isAdminLoggedIn = false;
 
-    // جلب البيانات من السحابة عند فتح الموقع
     async function fetchCloudData() {
       try {
         const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
@@ -200,16 +197,15 @@
           dbData = json.record;
         }
       } catch (err) {
-        console.log("خطأ في جلب البيانات السحابية، يتم استخدام الافتراضية");
+        console.log("خطأ في جلب البيانات السحابية");
       }
       applySettings();
       renderProducts();
     }
 
-    // رفع البيانات المحدثة للسحابة
     async function saveCloudData() {
       try {
-        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
           method: 'PUT',
           headers: {
             'Content-Type': 'application/json',
@@ -217,8 +213,11 @@
           },
           body: JSON.stringify(dbData)
         });
+        if (!res.ok) throw new Error('فشل الحفظ');
+        return true;
       } catch (err) {
         alert("فشل الحفظ على السحابة، تأكد من اتصال الإنترنت.");
+        return false;
       }
     }
 
@@ -369,20 +368,28 @@
       const price = parseFloat(document.getElementById('p-price').value);
       const desc = document.getElementById('p-desc').value;
       const fileInput = document.getElementById('p-image-file');
+      const submitBtn = document.getElementById('save-prod-btn');
 
       if (fileInput.files && fileInput.files[0]) {
+        submitBtn.innerText = "جاري الرفع للحفظ السحابي...";
+        submitBtn.disabled = true;
+
         const reader = new FileReader();
         reader.onload = async function(uploadEvent) {
           const base64Image = uploadEvent.target.result;
           const newP = { id: Date.now(), name, price, desc, image: base64Image };
           
           dbData.products.push(newP);
-          await saveCloudData();
+          const success = await saveCloudData();
           
-          renderProducts();
-          renderAdminProducts();
-          e.target.reset();
-          alert('تم إضافة المنتج وحفظه سحابياً ليظهر لكل الأجهزة فوراً!');
+          if (success) {
+            renderProducts();
+            renderAdminProducts();
+            e.target.reset();
+            alert('تم إضافة المنتج وحفظه سحابياً بنجاح وثبات كامل!');
+          }
+          submitBtn.innerText = "حفظ ونشر سحابياً";
+          submitBtn.disabled = false;
         };
         reader.readAsDataURL(fileInput.files[0]);
       }
@@ -391,9 +398,11 @@
     async function deleteProduct(id) {
       if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
         dbData.products = dbData.products.filter(p => p.id !== id);
-        await saveCloudData();
-        renderProducts();
-        renderAdminProducts();
+        const success = await saveCloudData();
+        if (success) {
+          renderProducts();
+          renderAdminProducts();
+        }
       }
     }
 
@@ -432,9 +441,11 @@
       dbData.settings.whatsapp = document.getElementById('set-whatsapp').value;
       dbData.settings.heroTitle = document.getElementById('set-hero-title').value;
 
-      await saveCloudData();
-      applySettings();
-      alert('تم حفظ إعدادات المتجر سحابياً بنجاح!');
+      const success = await saveCloudData();
+      if (success) {
+        applySettings();
+        alert('تم حفظ إعدادات المتجر سحابياً بنجاح!');
+      }
     }
 
     async function saveSocials() {
@@ -442,9 +453,11 @@
       dbData.socials.tiktok = document.getElementById('social-tiktok').value;
       dbData.socials.fb = document.getElementById('social-fb').value;
 
-      await saveCloudData();
-      applySettings();
-      alert('تم حفظ السوشيال ميديا سحابياً بنجاح!');
+      const success = await saveCloudData();
+      if (success) {
+        applySettings();
+        alert('تم حفظ السوشيال ميديا سحابياً بنجاح!');
+      }
     }
 
     async function changePassword() {
@@ -455,14 +468,14 @@
       if (!nw || nw.length < 4) { alert('كلمة المرور الجديدة قصيرة جداً.'); return; }
       
       dbData.pass = nw;
-      await saveCloudData();
-      
-      document.getElementById('sec-current').value = '';
-      document.getElementById('sec-new').value = '';
-      alert('تم تغيير كلمة المرور وحفظها سحابياً بنجاح للأبد!');
+      const success = await saveCloudData();
+      if (success) {
+        document.getElementById('sec-current').value = '';
+        document.getElementById('sec-new').value = '';
+        alert('تم تغيير كلمة المرور وحفظها سحابياً بنجاح!');
+      }
     }
 
-    // أول ما الصفحة تفتح، تسحب البيانات من السحابة وتحدث الشاشة
     fetchCloudData();
   </script>
 </body>
