@@ -188,8 +188,8 @@
   </footer>
 
   <script>
-    const GH_TOKEN = "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";
-    const OWNER = "Omaar-sheriff";
+    const GH_TOKEN = "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";
+    const OWNER = "Omaarsheriff";
     const REPO = "BOLT-EG";
     const FILE_PATH = "db.json";
 
@@ -235,7 +235,7 @@
           dbData = decodedContent;
         }
       } catch (err) {
-        console.log("جارٍ إنشاء ملف البيانات الأولية...");
+        console.log("سيتم إنشاء ملف البيانات تلقائياً عند أول حفظ...");
       }
       applySettings();
       renderProducts();
@@ -247,11 +247,14 @@
         const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
         const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(dbData, null, 2))));
         
-        const bodyData = {
+        let bodyData = {
           message: "Update store database via Admin Panel",
-          content: contentEncoded,
-          sha: fileSha || undefined
+          content: contentEncoded
         };
+        
+        if (fileSha) {
+          bodyData.sha = fileSha;
+        }
 
         const res = await fetch(apiUrl, {
           method: 'PUT',
@@ -262,12 +265,16 @@
           body: JSON.stringify(bodyData)
         });
 
-        if (!res.ok) throw new Error('فشل الحفظ في المستودع');
+        if (!res.ok) {
+          const errJson = await res.json();
+          throw new Error(errJson.message || 'فشل الحفظ');
+        }
+
         const jsonRes = await res.json();
         fileSha = jsonRes.content.sha;
         return true;
       } catch (err) {
-        alert("فشل الحفظ على جيت هب، تأكد من صحة التوكن.");
+        alert("فشل الحفظ في جيت هب. تأكد من أن التوكن صحيح ويمتلك صلاحية (repo) الكاملة.");
         return false;
       }
     }
@@ -515,13 +522,12 @@
       const curr = document.getElementById('sec-current').value;
       const nw = document.getElementById('sec-new').value;
 
-      if (curr !== dbData.pass) { alert('كلمة المرور الحالية غير صحيحة!'); return; }
+      if (curr !== dbData.pass) { alert('كلمة المرور الحالية غير صحيحةة!'); return; }
       if (!nw || nw.length < 4) { alert('كلمة المرور الجديدة قصيرة جداً.'); return; }
       
       dbData.pass = nw;
       const success = await saveCloudData();
       if (success) {
-        document.getElementById('sec-current-input') ? document.getElementById('sec-current-input').value = '' : '';
         document.getElementById('sec-current').value = '';
         document.getElementById('sec-new').value = '';
         alert('تم تغيير كلمة المرور بنجاح!');
