@@ -235,7 +235,7 @@
           dbData = decodedContent;
         }
       } catch (err) {
-        console.log("سيتم إنشاء ملف البيانات تلقائياً عند أول حفظ...");
+        console.log("خطأ في جلب البيانات...");
       }
       applySettings();
       renderProducts();
@@ -245,6 +245,16 @@
     async function saveCloudData() {
       try {
         const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+        
+        // جلب الـ SHA المحدث تفادياً لأخطاء التعارض
+        const checkRes = await fetch(apiUrl, {
+          headers: { 'Authorization': `token ${GH_TOKEN}` }
+        });
+        if (checkRes.ok) {
+          const jsonFile = await checkRes.json();
+          fileSha = jsonFile.sha;
+        }
+
         const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(dbData, null, 2))));
         
         let bodyData = {
