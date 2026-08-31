@@ -188,7 +188,7 @@
   </footer>
 
   <script>
-    const GH_TOKEN = "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";
+    const GH_TOKEN = "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";
     const OWNER = "Omaarsheriff";
     const REPO = "BOLT-EG";
     const FILE_PATH = "db.json";
@@ -522,7 +522,7 @@
       const curr = document.getElementById('sec-current').value;
       const nw = document.getElementById('sec-new').value;
 
-      if (curr !== dbData.pass) { alert('كلمة المرور الحالية غير صحيحةة!'); return; }
+      if (curr !== dbData.pass) { alert('كلمة المرور الحالية غير صحيحة!'); return; }
       if (!nw || nw.length < 4) { alert('كلمة المرور الجديدة قصيرة جداً.'); return; }
       
       dbData.pass = nw;
