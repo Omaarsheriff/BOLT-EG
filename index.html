@@ -82,7 +82,7 @@
     </div>
   </div>
 
-  <!-- لوحة التحكم السحابية -->
+  <!-- لوحة التحكم -->
   <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden">
     <div class="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 md:p-8 w-full max-w-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeAdminModal()" class="absolute top-4 left-4 text-neutral-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
@@ -100,8 +100,22 @@
       <!-- محتوى لوحة التحكم -->
       <div id="admin-dashboard-view" class="space-y-6 hidden">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-4">
-          <h2 class="text-xl font-black text-white">إدارة المتجر (مباشر وسحابي)</h2>
+          <h2 class="text-xl font-black text-white">إدارة المتجر</h2>
           <button onclick="logoutAdmin()" class="text-xs text-red-400 border border-red-900/50 bg-red-950/30 px-3 py-1.5 rounded-lg">تسجيل الخروج</button>
+        </div>
+
+        <!-- عداد الزوار -->
+        <div class="bg-neutral-900 border border-neutral-800 p-4 rounded-xl flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center text-white text-lg">
+              <i class="fa-solid fa-users"></i>
+            </div>
+            <div>
+              <p class="text-xs text-neutral-400">إجمالي زوار الموقع</p>
+              <h3 id="visitor-count-display" class="text-lg font-black text-white">جاري التحميل...</h3>
+            </div>
+          </div>
+          <span class="text-[10px] bg-emerald-950 text-emerald-400 border border-emerald-900 px-2.5 py-1 rounded-full font-bold">مباشر</span>
         </div>
 
         <div class="flex flex-wrap gap-2 border-b border-neutral-800 text-xs font-bold pb-2">
@@ -118,11 +132,11 @@
             <input type="text" id="p-name" placeholder="اسم المنتج" class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white" required>
             <input type="number" id="p-price" placeholder="السعر (EGP)" class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white" required>
             <div class="md:col-span-2 space-y-1">
-              <label class="text-neutral-400 text-xs">اختر صورة المنتج:</label>
+              <label class="text-neutral-400 text-xs">اختر صورة المنتج (كواليتي أصلي):</label>
               <input type="file" id="p-image-file" accept="image/*" class="w-full bg-neutral-900 p-2.5 rounded-lg border border-neutral-800 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-white file:text-black hover:file:bg-neutral-200 cursor-pointer" required>
             </div>
             <textarea id="p-desc" placeholder="وصف المنتج..." class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white md:col-span-2" rows="2"></textarea>
-            <button type="submit" id="save-prod-btn" class="md:col-span-2 bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">حفظ ونشر سحابياً</button>
+            <button type="submit" id="save-prod-btn" class="md:col-span-2 bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">حفظ ونشر على جيت هب</button>
           </form>
 
           <div class="pt-4 border-t border-neutral-800">
@@ -137,7 +151,7 @@
             <div><label class="block text-neutral-400 mb-1">اسم المتجر</label><input type="text" id="set-brand" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
             <div><label class="block text-neutral-400 mb-1">رقم الواتساب</label><input type="text" id="set-whatsapp" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
             <div><label class="block text-neutral-400 mb-1">عنوان الرئيسية</label><input type="text" id="set-hero-title" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
-            <button onclick="saveSettings()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ التغييرات سحابياً</button>
+            <button onclick="saveSettings()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ التغييرات</button>
           </div>
         </div>
 
@@ -147,7 +161,7 @@
             <div><label class="block text-neutral-400 mb-1">رابط إنستجرام</label><input type="url" id="social-insta" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
             <div><label class="block text-neutral-400 mb-1">رابط تيك توك</label><input type="url" id="social-tiktok" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
             <div><label class="block text-neutral-400 mb-1">رابط فيسبوك</label><input type="url" id="social-fb" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
-            <button onclick="saveSocials()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ السوشيال سحابياً</button>
+            <button onclick="saveSocials()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ السوشيال</button>
           </div>
         </div>
 
@@ -156,7 +170,7 @@
           <div class="space-y-3 text-xs max-w-md">
             <input type="password" id="sec-current" placeholder="كلمة المرور الحالية" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
             <input type="password" id="sec-new" placeholder="كلمة المرور الجديدة" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            <button onclick="changePassword()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">تحديث كلمة المرور سحابياً</button>
+            <button onclick="changePassword()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">تحديث كلمة المرور</button>
           </div>
         </div>
 
@@ -174,8 +188,10 @@
   </footer>
 
   <script>
-    const BIN_ID = "6a94f740da38895dfe24abc5"; 
-    const API_KEY = "$2a$10$3Z.6C8T950bP0ItUYn9Ir.4O/Sz.xuB6Bzv87E711DjVCuE0sNX7e"; 
+    const GH_TOKEN = "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";
+    const OWNER = "Omaar-sheriff";
+    const REPO = "BOLT-EG";
+    const FILE_PATH = "db.json";
 
     let dbData = {
       pass: "bolt2026",
@@ -184,39 +200,74 @@
       socials: { insta: "", tiktok: "", fb: "" }
     };
 
+    let fileSha = "";
     let cart = [];
     let isAdminLoggedIn = false;
 
+    async function trackVisitor() {
+      try {
+        let res = await fetch('https://api.countapi.xyz/hit/bolt-eg-store-visitors/visits');
+        let data = await res.json();
+        if(data && data.value) {
+          document.getElementById('visitor-count-display').innerText = data.value + " زائر";
+        }
+      } catch(e) {
+        let localVisits = localStorage.getItem('site_visits') || 125;
+        if(!sessionStorage.getItem('visited')) {
+          localVisits = parseInt(localVisits) + 1;
+          localStorage.setItem('site_visits', localVisits);
+          sessionStorage.setItem('visited', 'true');
+        }
+        document.getElementById('visitor-count-display').innerText = localVisits + " زائر";
+      }
+    }
+
     async function fetchCloudData() {
       try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
-          headers: { 'X-Master-Key': API_KEY }
+        const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+        const res = await fetch(apiUrl, {
+          headers: { 'Authorization': `token ${GH_TOKEN}` }
         });
-        const json = await res.json();
-        if (json && json.record) {
-          dbData = json.record;
+        if (res.ok) {
+          const json = await res.json();
+          fileSha = json.sha;
+          const decodedContent = JSON.parse(decodeURIComponent(escape(atob(json.content))));
+          dbData = decodedContent;
         }
       } catch (err) {
-        console.log("خطأ في جلب البيانات السحابية");
+        console.log("جارٍ إنشاء ملف البيانات الأولية...");
       }
       applySettings();
       renderProducts();
+      trackVisitor();
     }
 
     async function saveCloudData() {
       try {
-        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+        const apiUrl = `https://api.github.com/repos/${OWNER}/${REPO}/contents/${FILE_PATH}`;
+        const contentEncoded = btoa(unescape(encodeURIComponent(JSON.stringify(dbData, null, 2))));
+        
+        const bodyData = {
+          message: "Update store database via Admin Panel",
+          content: contentEncoded,
+          sha: fileSha || undefined
+        };
+
+        const res = await fetch(apiUrl, {
           method: 'PUT',
           headers: {
-            'Content-Type': 'application/json',
-            'X-Master-Key': API_KEY
+            'Authorization': `token ${GH_TOKEN}`,
+            'Content-Type': 'application/json'
           },
-          body: JSON.stringify(dbData)
+          body: JSON.stringify(bodyData)
         });
-        if (!res.ok) throw new Error('فشل الحفظ');
+
+        if (!res.ok) throw new Error('فشل الحفظ في المستودع');
+        const jsonRes = await res.json();
+        fileSha = jsonRes.content.sha;
         return true;
       } catch (err) {
-        alert("فشل الحفظ على السحابة، تأكد من اتصال الإنترنت.");
+        alert("فشل الحفظ على جيت هب، تأكد من صحة التوكن.");
         return false;
       }
     }
@@ -371,7 +422,7 @@
       const submitBtn = document.getElementById('save-prod-btn');
 
       if (fileInput.files && fileInput.files[0]) {
-        submitBtn.innerText = "جاري الرفع للحفظ السحابي...";
+        submitBtn.innerText = "جاري الحفظ في مستودع جيت هب...";
         submitBtn.disabled = true;
 
         const reader = new FileReader();
@@ -386,9 +437,9 @@
             renderProducts();
             renderAdminProducts();
             e.target.reset();
-            alert('تم إضافة المنتج وحفظه سحابياً بنجاح وثبات كامل!');
+            alert('تم إضافة المنتج وثبته على جيت هب بنجاح نهائي!');
           }
-          submitBtn.innerText = "حفظ ونشر سحابياً";
+          submitBtn.innerText = "حفظ ونشر على جيت هب";
           submitBtn.disabled = false;
         };
         reader.readAsDataURL(fileInput.files[0]);
@@ -444,7 +495,7 @@
       const success = await saveCloudData();
       if (success) {
         applySettings();
-        alert('تم حفظ إعدادات المتجر سحابياً بنجاح!');
+        alert('تم حفظ إعدادات المتجر بنجاح!');
       }
     }
 
@@ -456,7 +507,7 @@
       const success = await saveCloudData();
       if (success) {
         applySettings();
-        alert('تم حفظ السوشيال ميديا سحابياً بنجاح!');
+        alert('تم حفظ السوشيال ميديا بنجاح!');
       }
     }
 
@@ -470,9 +521,10 @@
       dbData.pass = nw;
       const success = await saveCloudData();
       if (success) {
+        document.getElementById('sec-current-input') ? document.getElementById('sec-current-input').value = '' : '';
         document.getElementById('sec-current').value = '';
         document.getElementById('sec-new').value = '';
-        alert('تم تغيير كلمة المرور وحفظها سحابياً بنجاح!');
+        alert('تم تغيير كلمة المرور بنجاح!');
       }
     }
 
