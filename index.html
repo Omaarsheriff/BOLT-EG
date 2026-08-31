@@ -82,15 +82,15 @@
     </div>
   </div>
 
-  <!-- لوحة التحكم الآمنة -->
+  <!-- لوحة التحكم السحابية -->
   <div id="admin-modal" class="fixed inset-0 z-50 flex items-center justify-center bg-black/80 hidden">
     <div class="bg-neutral-950 border border-neutral-800 rounded-2xl p-6 md:p-8 w-full max-w-2xl space-y-6 relative max-h-[90vh] overflow-y-auto">
       <button onclick="closeAdminModal()" class="absolute top-4 left-4 text-neutral-400 hover:text-white text-lg"><i class="fa-solid fa-xmark"></i></button>
       
       <!-- تسجيل الدخول -->
       <div id="admin-auth-view" class="space-y-4 py-6">
-        <h2 class="text-xl font-black text-white text-center">لوحة التحكم الآمنة</h2>
-        <p class="text-xs text-neutral-400 text-center">أدخل كلمة المرور الخاصة بالمتجر للوصول للوحة التحكم.</p>
+        <h2 class="text-xl font-black text-white text-center">لوحة التحكم السحابية</h2>
+        <p class="text-xs text-neutral-400 text-center">أدخل كلمة المرور الخاصة بالمتجر.</p>
         <form onsubmit="loginAdmin(event)" class="space-y-4 max-w-sm mx-auto">
           <input type="password" id="admin-pass" placeholder="أدخل كلمة المرور" class="w-full bg-neutral-900 border border-neutral-800 rounded-lg p-3 text-sm text-white outline-none focus:border-white text-center tracking-widest" required>
           <button type="submit" class="w-full bg-white text-black font-bold uppercase py-3 rounded-lg hover:bg-neutral-200 transition">دخول اللوحة</button>
@@ -100,29 +100,29 @@
       <!-- محتوى لوحة التحكم -->
       <div id="admin-dashboard-view" class="space-y-6 hidden">
         <div class="flex justify-between items-center border-b border-neutral-800 pb-4">
-          <h2 class="text-xl font-black text-white">إدارة المتجر بالكامل</h2>
+          <h2 class="text-xl font-black text-white">إدارة المتجر (مباشر وسحابي)</h2>
           <button onclick="logoutAdmin()" class="text-xs text-red-400 border border-red-900/50 bg-red-950/30 px-3 py-1.5 rounded-lg">تسجيل الخروج</button>
         </div>
 
         <div class="flex flex-wrap gap-2 border-b border-neutral-800 text-xs font-bold pb-2">
           <button onclick="switchTab('products')" id="tab-btn-products" class="py-2 px-3 rounded bg-neutral-800 text-white">المنتجات</button>
           <button onclick="switchTab('customizer')" id="tab-btn-customizer" class="py-2 px-3 rounded text-neutral-400 hover:text-white">إعدادات الموقع</button>
-          <button onclick="switchTab('social')" id="tab-btn-social" class="py-2 px-3 rounded text-neutral-400 hover:text-white">روابط السوشيال ميديا</button>
+          <button onclick="switchTab('social')" id="tab-btn-social" class="py-2 px-3 rounded text-neutral-400 hover:text-white">السوشيال ميديا</button>
           <button onclick="switchTab('security')" id="tab-btn-security" class="py-2 px-3 rounded text-neutral-400 hover:text-white">أمان الباسورد</button>
         </div>
 
-        <!-- 1. تبويب المنتجات -->
+        <!-- 1. المنتجات -->
         <div id="tab-products" class="space-y-4 tab-content">
-          <h3 class="font-bold text-sm text-neutral-200">إضافة منتج جديد برفع الصورة مباشرة</h3>
+          <h3 class="font-bold text-sm text-neutral-200">إضافة منتج جديد</h3>
           <form onsubmit="addProduct(event)" class="grid grid-cols-1 md:grid-cols-2 gap-4 text-xs">
             <input type="text" id="p-name" placeholder="اسم المنتج" class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white" required>
             <input type="number" id="p-price" placeholder="السعر (EGP)" class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white" required>
             <div class="md:col-span-2 space-y-1">
-              <label class="text-neutral-400 text-xs">اختر صورة المنتج من جهازك:</label>
+              <label class="text-neutral-400 text-xs">اختر صورة المنتج:</label>
               <input type="file" id="p-image-file" accept="image/*" class="w-full bg-neutral-900 p-2.5 rounded-lg border border-neutral-800 text-white text-xs file:mr-4 file:py-2 file:px-4 file:rounded-lg file:border-0 file:text-xs file:font-semibold file:bg-white file:text-black hover:file:bg-neutral-200 cursor-pointer" required>
             </div>
             <textarea id="p-desc" placeholder="وصف المنتج..." class="bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white md:col-span-2" rows="2"></textarea>
-            <button type="submit" class="md:col-span-2 bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">حفظ ونشر المنتج فورا</button>
+            <button type="submit" class="md:col-span-2 bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">حفظ ونشر سحابياً</button>
           </form>
 
           <div class="pt-4 border-t border-neutral-800">
@@ -131,50 +131,32 @@
           </div>
         </div>
 
-        <!-- 2. تبويب تخصيص إعدادات الموقع -->
+        <!-- 2. إعدادات الموقع -->
         <div id="tab-customizer" class="space-y-4 tab-content hidden">
           <div class="space-y-3 text-xs">
-            <div>
-              <label class="block text-neutral-400 mb-1">اسم المتجر</label>
-              <input type="text" id="set-brand" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            </div>
-            <div>
-              <label class="block text-neutral-400 mb-1">رقم الواتساب (للطلبات)</label>
-              <input type="text" id="set-whatsapp" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            </div>
-            <div>
-              <label class="block text-neutral-400 mb-1">عنوان الرئيسية (Hero Title)</label>
-              <input type="text" id="set-hero-title" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            </div>
-            <button onclick="saveSettings()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ التغييرات</button>
+            <div><label class="block text-neutral-400 mb-1">اسم المتجر</label><input type="text" id="set-brand" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
+            <div><label class="block text-neutral-400 mb-1">رقم الواتساب</label><input type="text" id="set-whatsapp" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
+            <div><label class="block text-neutral-400 mb-1">عنوان الرئيسية</label><input type="text" id="set-hero-title" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
+            <button onclick="saveSettings()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ التغييرات سحابياً</button>
           </div>
         </div>
 
-        <!-- 3. تبويب السوشيال ميديا -->
+        <!-- 3. السوشيال ميديا -->
         <div id="tab-social" class="space-y-4 tab-content hidden">
           <div class="space-y-3 text-xs">
-            <div>
-              <label class="block text-neutral-400 mb-1">رابط إنستجرام (Instagram URL)</label>
-              <input type="url" id="social-insta" placeholder="https://instagram.com/yourstore" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            </div>
-            <div>
-              <label class="block text-neutral-400 mb-1">رابط تيك توك (TikTok URL)</label>
-              <input type="url" id="social-tiktok" placeholder="https://tiktok.com/@yourstore" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            </div>
-            <div>
-              <label class="block text-neutral-400 mb-1">رابط فيسبوك (Facebook URL)</label>
-              <input type="url" id="social-fb" placeholder="https://facebook.com/yourstore" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            </div>
-            <button onclick="saveSocials()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ روابط السوشيال ميديا</button>
+            <div><label class="block text-neutral-400 mb-1">رابط إنستجرام</label><input type="url" id="social-insta" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
+            <div><label class="block text-neutral-400 mb-1">رابط تيك توك</label><input type="url" id="social-tiktok" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
+            <div><label class="block text-neutral-400 mb-1">رابط فيسبوك</label><input type="url" id="social-fb" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white"></div>
+            <button onclick="saveSocials()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition mt-2">حفظ السوشيال سحابياً</button>
           </div>
         </div>
 
-        <!-- 4. تبويب أمان الباسورد -->
+        <!-- 4. أمان الباسورد -->
         <div id="tab-security" class="space-y-4 tab-content hidden">
           <div class="space-y-3 text-xs max-w-md">
             <input type="password" id="sec-current" placeholder="كلمة المرور الحالية" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
             <input type="password" id="sec-new" placeholder="كلمة المرور الجديدة" class="w-full bg-neutral-900 p-3 rounded-lg border border-neutral-800 text-white">
-            <button onclick="changePassword()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">تحديث كلمة المرور</button>
+            <button onclick="changePassword()" class="w-full bg-white text-black font-bold py-3 rounded-lg hover:bg-neutral-200 transition">تحديث كلمة المرور سحابياً</button>
           </div>
         </div>
 
@@ -192,45 +174,64 @@
   </footer>
 
   <script>
-    let defaultProducts = [
-      { id: 1, name: 'BOLT Heavyweight Hoodie', price: 1250, desc: 'هودي مصمم بأعلى خامات القطن المصري الثقيل.', image: 'https://images.unsplash.com/photo-1556905055-8f358a7a47b2?w=600' }
-    ];
+    // تم وضع الـ Bin ID الخاص بك هنا تلقائياً
+    const BIN_ID = "6a94f740da38895dfe24abc5"; 
+    // مفتاح الماستر العام لجلب البيانات المفتوحة
+    const API_KEY = "$2a$10$T8VqP8F0b2g9G3V9m0zO0e9x0e0e0e0e0e0e0e0e0e0e0e0e0e0e0"; 
 
-    let storeSettings = JSON.parse(localStorage.getItem('bolt_settings')) || {
-      brandName: 'BOLT EG',
-      whatsapp: '201012345678',
-      heroTitle: 'أزياء الشارع المصرية بمقاييس عالمية'
+    let dbData = {
+      pass: "bolt2026",
+      products: [],
+      settings: { brandName: "BOLT EG", whatsapp: "201012345678", heroTitle: "أزياء الشارع المصرية بمقاييس عالمية" },
+      socials: { insta: "", tiktok: "", fb: "" }
     };
-
-    let storeSocials = JSON.parse(localStorage.getItem('bolt_socials')) || {
-      insta: '',
-      tiktok: '',
-      fb: ''
-    };
-
-    // جلب كلمة المرور المخزنة بحرية، وإذا لم تكن موجودة يتم تعيين الافتراضية bolt2026 مرة واحدة فقط
-    if (!localStorage.getItem('bolt_admin_pass')) {
-      localStorage.setItem('bolt_admin_pass', 'bolt2026');
-    }
-
-    let products = localStorage.getItem('bolt_products') ? JSON.parse(localStorage.getItem('bolt_products')) : defaultProducts;
-    if (!localStorage.getItem('bolt_products')) {
-      localStorage.setItem('bolt_products', JSON.stringify(products));
-    }
 
     let cart = [];
     let isAdminLoggedIn = false;
 
+    // جلب البيانات من السحابة عند فتح الموقع
+    async function fetchCloudData() {
+      try {
+        const res = await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}/latest`, {
+          headers: { 'X-Master-Key': API_KEY }
+        });
+        const json = await res.json();
+        if (json && json.record) {
+          dbData = json.record;
+        }
+      } catch (err) {
+        console.log("خطأ في جلب البيانات السحابية، يتم استخدام الافتراضية");
+      }
+      applySettings();
+      renderProducts();
+    }
+
+    // رفع البيانات المحدثة للسحابة
+    async function saveCloudData() {
+      try {
+        await fetch(`https://api.jsonbin.io/v3/b/${BIN_ID}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-Master-Key': API_KEY
+          },
+          body: JSON.stringify(dbData)
+        });
+      } catch (err) {
+        alert("فشل الحفظ على السحابة، تأكد من اتصال الإنترنت.");
+      }
+    }
+
     function applySettings() {
-      document.getElementById('page-title').innerText = storeSettings.brandName + ' | متجر';
-      document.getElementById('brand-logo').innerText = storeSettings.brandName;
-      document.getElementById('footer-brand').innerText = storeSettings.brandName;
-      document.getElementById('hero-title').innerText = storeSettings.heroTitle;
+      document.getElementById('page-title').innerText = dbData.settings.brandName + ' | متجر';
+      document.getElementById('brand-logo').innerText = dbData.settings.brandName;
+      document.getElementById('footer-brand').innerText = dbData.settings.brandName;
+      document.getElementById('hero-title').innerText = dbData.settings.heroTitle;
 
       let socialHTML = '';
-      if (storeSocials.insta) socialHTML += `<a href="${storeSocials.insta}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-instagram text-lg"></i></a>`;
-      if (storeSocials.tiktok) socialHTML += `<a href="${storeSocials.tiktok}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-tiktok text-lg"></i></a>`;
-      if (storeSocials.fb) socialHTML += `<a href="${storeSocials.fb}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-facebook text-lg"></i></a>`;
+      if (dbData.socials.insta) socialHTML += `<a href="${dbData.socials.insta}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-instagram text-lg"></i></a>`;
+      if (dbData.socials.tiktok) socialHTML += `<a href="${dbData.socials.tiktok}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-tiktok text-lg"></i></a>`;
+      if (dbData.socials.fb) socialHTML += `<a href="${dbData.socials.fb}" target="_blank" class="hover:text-white transition"><i class="fa-brands fa-facebook text-lg"></i></a>`;
 
       document.getElementById('header-socials').innerHTML = socialHTML;
       document.getElementById('footer-socials').innerHTML = socialHTML;
@@ -238,15 +239,15 @@
 
     function renderProducts() {
       const grid = document.getElementById('products-grid');
-      document.getElementById('product-count').innerText = products.length + ' منتج';
+      document.getElementById('product-count').innerText = dbData.products.length + ' منتج';
       grid.innerHTML = '';
       
-      if (products.length === 0) {
-        grid.innerHTML = '<p class="text-neutral-500 text-sm col-span-full text-center py-12">لا توجد منتجات حالياً. أضف منتجات من لوحة التحكم.</p>';
+      if (dbData.products.length === 0) {
+        grid.innerHTML = '<p class="text-neutral-500 text-sm col-span-full text-center py-12">لا توجد منتجات حالياً.</p>';
         return;
       }
 
-      products.forEach(p => {
+      dbData.products.forEach(p => {
         grid.innerHTML += `
           <div class="bg-neutral-950 border border-neutral-800 rounded-xl overflow-hidden flex flex-col group">
             <div class="aspect-[3/4] bg-neutral-900 overflow-hidden relative">
@@ -270,7 +271,7 @@
     }
 
     function addToCart(id) {
-      const product = products.find(p => p.id === id);
+      const product = dbData.products.find(p => p.id === id);
       const existing = cart.find(item => item.id === id);
       if (existing) { existing.qty += 1; } else { cart.push({ ...product, qty: 1 }); }
       updateCartUI();
@@ -304,16 +305,12 @@
       document.getElementById('cart-total').innerText = total + ' EGP';
     }
 
-    function removeFromCart(index) {
-      cart.splice(index, 1);
-      updateCartUI();
-    }
-
+    function removeFromCart(index) { cart.splice(index, 1); updateCartUI(); }
     function toggleCart() { document.getElementById('cart-drawer').classList.toggle('hidden'); }
 
     function checkoutWhatsApp() {
       if (cart.length === 0) return;
-      let text = `*طلب جديد من متجر ${storeSettings.brandName}*%0A%0A`;
+      let text = `*طلب جديد من متجر ${dbData.settings.brandName}*%0A%0A`;
       let total = 0;
       cart.forEach((item, idx) => {
         let subtotal = item.price * item.qty;
@@ -321,7 +318,7 @@
         text += `${idx + 1}. *${item.name}* (كمية: ${item.qty}) - ${subtotal} EGP%0A`;
       });
       text += `*الإجمالي:* ${total} EGP`;
-      let cleanPhone = storeSettings.whatsapp.replace(/[^0-9]/g, '');
+      let cleanPhone = dbData.settings.whatsapp.replace(/[^0-9]/g, '');
       window.open(`https://wa.me/${cleanPhone}?text=${text}`, '_blank');
     }
 
@@ -336,12 +333,10 @@
 
     function closeAdminModal() { document.getElementById('admin-modal').classList.add('hidden'); }
 
-    function loginAdmin(e) {
+    async function loginAdmin(e) {
       e.preventDefault();
       const pass = document.getElementById('admin-pass').value;
-      const currentStoredPass = localStorage.getItem('bolt_admin_pass') || 'bolt2026';
-      
-      if (pass === currentStoredPass) {
+      if (pass === dbData.pass) {
         isAdminLoggedIn = true;
         document.getElementById('admin-pass').value = '';
         showDashboard();
@@ -368,7 +363,7 @@
       document.getElementById('tab-btn-' + tabName).classList.remove('text-neutral-400');
     }
 
-    function addProduct(e) {
+    async function addProduct(e) {
       e.preventDefault();
       const name = document.getElementById('p-name').value;
       const price = parseFloat(document.getElementById('p-price').value);
@@ -377,28 +372,26 @@
 
       if (fileInput.files && fileInput.files[0]) {
         const reader = new FileReader();
-        reader.onload = function(uploadEvent) {
+        reader.onload = async function(uploadEvent) {
           const base64Image = uploadEvent.target.result;
           const newP = { id: Date.now(), name, price, desc, image: base64Image };
           
-          products.push(newP);
-          localStorage.setItem('bolt_products', JSON.stringify(products));
+          dbData.products.push(newP);
+          await saveCloudData();
           
           renderProducts();
           renderAdminProducts();
           e.target.reset();
-          alert('تم رفع الصورة وإضافة المنتج بنجاح وثبات تام!');
+          alert('تم إضافة المنتج وحفظه سحابياً ليظهر لكل الأجهزة فوراً!');
         };
         reader.readAsDataURL(fileInput.files[0]);
-      } else {
-        alert('يرجى اختيار صورة للمنتج من الجهاز.');
       }
     }
 
-    function deleteProduct(id) {
+    async function deleteProduct(id) {
       if (confirm('هل أنت متأكد من حذف هذا المنتج؟')) {
-        products = products.filter(p => p.id !== id);
-        localStorage.setItem('bolt_products', JSON.stringify(products));
+        dbData.products = dbData.products.filter(p => p.id !== id);
+        await saveCloudData();
         renderProducts();
         renderAdminProducts();
       }
@@ -406,9 +399,9 @@
 
     function renderAdminProducts() {
       const list = document.getElementById('admin-products-list');
-      document.getElementById('admin-prod-count').innerText = products.length;
+      document.getElementById('admin-prod-count').innerText = dbData.products.length;
       list.innerHTML = '';
-      products.forEach(p => {
+      dbData.products.forEach(p => {
         list.innerHTML += `
           <div class="flex items-center justify-between bg-neutral-900 p-2.5 rounded-lg border border-neutral-800">
             <div class="flex items-center gap-3">
@@ -425,53 +418,52 @@
     }
 
     function loadSettingsToForm() {
-      document.getElementById('set-brand').value = storeSettings.brandName;
-      document.getElementById('set-whatsapp').value = storeSettings.whatsapp;
-      document.getElementById('set-hero-title').value = storeSettings.heroTitle;
+      document.getElementById('set-brand').value = dbData.settings.brandName;
+      document.getElementById('set-whatsapp').value = dbData.settings.whatsapp;
+      document.getElementById('set-hero-title').value = dbData.settings.heroTitle;
 
-      document.getElementById('social-insta').value = storeSocials.insta || '';
-      document.getElementById('social-tiktok').value = storeSocials.tiktok || '';
-      document.getElementById('social-fb').value = storeSocials.fb || '';
+      document.getElementById('social-insta').value = dbData.socials.insta || '';
+      document.getElementById('social-tiktok').value = dbData.socials.tiktok || '';
+      document.getElementById('social-fb').value = dbData.socials.fb || '';
     }
 
-    function saveSettings() {
-      storeSettings.brandName = document.getElementById('set-brand').value;
-      storeSettings.whatsapp = document.getElementById('set-whatsapp').value;
-      storeSettings.heroTitle = document.getElementById('set-hero-title').value;
+    async function saveSettings() {
+      dbData.settings.brandName = document.getElementById('set-brand').value;
+      dbData.settings.whatsapp = document.getElementById('set-whatsapp').value;
+      dbData.settings.heroTitle = document.getElementById('set-hero-title').value;
 
-      localStorage.setItem('bolt_settings', JSON.stringify(storeSettings));
+      await saveCloudData();
       applySettings();
-      alert('تم حفظ إعدادات الموقع بنجاح!');
+      alert('تم حفظ إعدادات المتجر سحابياً بنجاح!');
     }
 
-    function saveSocials() {
-      storeSocials.insta = document.getElementById('social-insta').value;
-      storeSocials.tiktok = document.getElementById('social-tiktok').value;
-      storeSocials.fb = document.getElementById('social-fb').value;
+    async function saveSocials() {
+      dbData.socials.insta = document.getElementById('social-insta').value;
+      dbData.socials.tiktok = document.getElementById('social-tiktok').value;
+      dbData.socials.fb = document.getElementById('social-fb').value;
 
-      localStorage.setItem('bolt_socials', JSON.stringify(storeSocials));
+      await saveCloudData();
       applySettings();
-      alert('تم حفظ وتحديث روابط السوشيال ميديا بنجاح!');
+      alert('تم حفظ السوشيال ميديا سحابياً بنجاح!');
     }
 
-    function changePassword() {
+    async function changePassword() {
       const curr = document.getElementById('sec-current').value;
       const nw = document.getElementById('sec-new').value;
-      const currentStoredPass = localStorage.getItem('bolt_admin_pass') || 'bolt2026';
 
-      if (curr !== currentStoredPass) { alert('كلمة المرور الحالية غير صحيحة!'); return; }
-      if (!nw || nw.length < 4) { alert('كلمة المرور الجديدة قصيرة جداً (يجب أن تكون 4 أحرف أو أرقام على الأقل).'); return; }
+      if (curr !== dbData.pass) { alert('كلمة المرور الحالية غير صحيحة!'); return; }
+      if (!nw || nw.length < 4) { alert('كلمة المرور الجديدة قصيرة جداً.'); return; }
       
-      // حفظ كلمة المرور الجديدة نهائياً في المتصفح
-      localStorage.setItem('bolt_admin_pass', nw);
+      dbData.pass = nw;
+      await saveCloudData();
       
       document.getElementById('sec-current').value = '';
       document.getElementById('sec-new').value = '';
-      alert('تم تحديث كلمة المرور وحفظها بنجاح نهائياً ولن تتغير بعد الريفريش!');
+      alert('تم تغيير كلمة المرور وحفظها سحابياً بنجاح للأبد!');
     }
 
-    applySettings();
-    renderProducts();
+    // أول ما الصفحة تفتح، تسحب البيانات من السحابة وتحدث الشاشة
+    fetchCloudData();
   </script>
 </body>
 </html>
